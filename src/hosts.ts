@@ -10,6 +10,11 @@ interface IRecord {
   address: string
 }
 
+interface IResult {
+  address: string | undefined
+  hasRecords: boolean
+}
+
 export class Hosts {
   private records: IRecord[] = []
 
@@ -29,19 +34,21 @@ export class Hosts {
     }))
   }
 
-  resolveA(hostname: string): string | undefined {
-    const record = this.records.find(record => {
-      return record.pattern.match(hostname)
-          && isIPv4Address(record.address)
-    })
-    return record?.address
+  resolveA(hostname: string): IResult {
+    const records = this.records.filter(record => record.pattern.match(hostname))
+    const record = records.find(record => isIPv4Address(record.address))
+    return {
+      address: record?.address
+    , hasRecords: !!records.length
+    }
   }
 
-  resolveAAAA(hostname: string): string | undefined {
-    const record = this.records.find(record => {
-      return record.pattern.match(hostname)
-          && isIPv6Address(record.address)
-    })
-    return record?.address
+  resolveAAAA(hostname: string): IResult {
+    const records = this.records.filter(record => record.pattern.match(hostname))
+    const record = records.find(record => isIPv6Address(record.address))
+    return {
+      address: record?.address
+    , hasRecords: !!records.length
+    }
   }
 }

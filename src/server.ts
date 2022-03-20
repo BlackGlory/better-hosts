@@ -1,12 +1,10 @@
 import { IServerInfo } from '@utils/parse-server-info'
 import * as dns from 'native-node-dns'
-import { map } from 'extra-promise'
 import { getErrorResultAsync } from 'return-style'
 import { Logger } from 'extra-logger'
 import { Hosts } from './hosts'
 import chalk from 'chalk'
 import ms from 'ms'
-import { isntUndefined } from '@blackglory/types'
 import { go } from '@blackglory/go'
 
 interface IStartServerOptions {
@@ -22,51 +20,61 @@ export function startServer({ logger, port, hosts, fallbackServer }: IStartServe
   server.on('error', console.error)
   server.on('socketError', console.error)
   server.on('request', async (req, res) => {
-    const answers = await map(req.question, async question => {
-      logger.trace(`${formatHostname(question.name)} ${dns.consts.NAME_TO_QTYPE[question.type]}`)
-      const address = go(() => {
-        switch (question.type) {
-          case dns.consts.NAME_TO_QTYPE.A: return hosts.resolveA(question.name)
-          case dns.consts.NAME_TO_QTYPE.AAAA: return hosts.resolveAAAA(question.name)
-        }
-      })
-      if (isntUndefined(address)) {
-        logger.info(`${formatHostname(question.name)} ${address}`)
-        return [
-          {
-            name: question.name
-          , type: question.type
-          , class: question.class
-          , address
-          , ttl: 0
-          }
-        ] as dns.IResourceRecord[]
-      }
+    logger.trace(`request: ${JSON.stringify(req)}`)
 
-      const startTime = Date.now()
-      const [err, answers] = await getErrorResultAsync(() => resolve(fallbackServer, question))
-      if (err) {
-        logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
-        return []
-      }
+    res.header.rcode = dns.consts.NAME_TO_RCODE.SERVFAIL
 
-      logger.info(`${formatHostname(question.name)} ${dns.consts.NAME_TO_QTYPE[question.type]}`, getElapsed(startTime))
-      return answers
+    const question = req.question[0]
+    logger.trace(`${formatHostname(question.name)} ${dns.consts.NAME_TO_QTYPE[question.type]}`)
+    const result = go(() => {
+      switch (question.type) {
+        case dns.consts.NAME_TO_QTYPE.A: return hosts.resolveA(question.name)
+        case dns.consts.NAME_TO_QTYPE.AAAA: return hosts.resolveAAAA(question.name)
+      }
     })
+    if (result?.hasRecords) {
+      logger.info(`${formatHostname(question.name)} ${result}`)
+      if (result.address) {
+        res.header.rcode = dns.consts.NAME_TO_RCODE.NOERROR
+        res.answer.push({
+          name: question.name
+        , type: question.type
+        , class: question.class
+        , ttl: 0
+        , address: result.address
+        })
+        return sendRes()
+      } else {
+        res.header.rcode = dns.consts.NAME_TO_RCODE.NOTFOUND
+        return sendRes()
+      }
+    }
 
-    answers
-      .flat()
-      .forEach(answer => res.answer.push(answer))
+    const startTime = Date.now()
+    const [err, response] = await getErrorResultAsync(() => resolve(fallbackServer, question))
+    if (err) {
+      logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
+      return sendRes()
+    }
+    logger.info(`${formatHostname(question.name)} ${dns.consts.NAME_TO_QTYPE[question.type]}`, getElapsed(startTime))
 
-    res.send()
+    res.header.rcode = response!.header.rcode
+    res.answer = response!.answer
+    res.authority = response!.authority
+    sendRes()
+
+    function sendRes() {
+      logger.trace(`response: ${JSON.stringify(res)}`)
+      res.send()
+    }
   })
 
   return server.serve(port)
 }
 
-function resolve(server: IServerInfo, question: dns.IQuestion): Promise<dns.IResourceRecord[]> {
+function resolve(server: IServerInfo, question: dns.IQuestion): Promise<dns.IPacket> {
   return new Promise((resolve, reject) => {
-    const answers: dns.IResourceRecord[] = []
+    let response: dns.IPacket
     const request = dns.Request({
       question
     , server: {
@@ -81,10 +89,10 @@ function resolve(server: IServerInfo, question: dns.IQuestion): Promise<dns.IRes
 
     request.on('timeout', () => reject())
     request.on('cancelled', () => reject())
-    request.on('end', () => resolve(answers))
+    request.on('end', () => resolve(response))
     request.on('message', (err, msg) => {
       if (err) return reject(err)
-      msg.answer.forEach(answer => answers.push(answer))
+      response = msg
     })
 
     request.send()
