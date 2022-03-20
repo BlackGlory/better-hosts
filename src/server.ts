@@ -1,7 +1,6 @@
 import { IServerInfo } from '@utils/parse-server-info'
 import * as dns from 'native-node-dns'
 import { map } from 'extra-promise'
-import { ResourceRecordType } from './resource-record-type'
 import { getErrorResultAsync } from 'return-style'
 import { Logger } from 'extra-logger'
 import { Hosts } from './hosts'
@@ -24,11 +23,11 @@ export function startServer({ logger, port, hosts, fallbackServer }: IStartServe
   server.on('socketError', console.error)
   server.on('request', async (req, res) => {
     const answers = await map(req.question, async question => {
-      logger.trace(`${formatHostname(question.name)} ${ResourceRecordType[question.type]}`)
+      logger.trace(`${formatHostname(question.name)} ${dns.consts.NAME_TO_QTYPE[question.type]}`)
       const address = go(() => {
         switch (question.type) {
-          case ResourceRecordType.A: return hosts.resolveA(question.name)
-          case ResourceRecordType.AAAA: return hosts.resolveAAAA(question.name)
+          case dns.consts.NAME_TO_QTYPE.A: return hosts.resolveA(question.name)
+          case dns.consts.NAME_TO_QTYPE.AAAA: return hosts.resolveAAAA(question.name)
         }
       })
       if (isntUndefined(address)) {
@@ -51,7 +50,7 @@ export function startServer({ logger, port, hosts, fallbackServer }: IStartServe
         return []
       }
 
-      logger.info(`${formatHostname(question.name)} ${ResourceRecordType[question.type]}`, getElapsed(startTime))
+      logger.info(`${formatHostname(question.name)} ${dns.consts.NAME_TO_QTYPE[question.type]}`, getElapsed(startTime))
       return answers
     })
 
