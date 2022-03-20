@@ -6,6 +6,7 @@ import { Hosts } from './hosts'
 import chalk from 'chalk'
 import ms from 'ms'
 import { go } from '@blackglory/go'
+import { RecordType } from './record-types'
 
 interface IStartServerOptions {
   fallbackServer: IServerInfo
@@ -25,7 +26,7 @@ export function startServer({ logger, port, hosts, fallbackServer }: IStartServe
     res.header.rcode = dns.consts.NAME_TO_RCODE.SERVFAIL
 
     const question = req.question[0]
-    logger.trace(`${formatHostname(question.name)} ${dns.consts.NAME_TO_QTYPE[question.type]}`)
+    logger.trace(`${formatHostname(question.name)} ${RecordType[question.type]}`)
     const result = go(() => {
       switch (question.type) {
         case dns.consts.NAME_TO_QTYPE.A: return hosts.resolveA(question.name)
@@ -33,8 +34,8 @@ export function startServer({ logger, port, hosts, fallbackServer }: IStartServe
       }
     })
     if (result?.hasRecords) {
-      logger.info(`${formatHostname(question.name)} ${result}`)
       if (result.address) {
+        logger.info(`${formatHostname(question.name)} ${result.address}`)
         res.header.rcode = dns.consts.NAME_TO_RCODE.NOERROR
         res.answer.push({
           name: question.name
@@ -45,7 +46,8 @@ export function startServer({ logger, port, hosts, fallbackServer }: IStartServe
         })
         return sendRes()
       } else {
-        res.header.rcode = dns.consts.NAME_TO_RCODE.NOTFOUND
+        logger.info(`${formatHostname(question.name)} No records for ${RecordType[question.type]}`)
+        res.header.rcode = dns.consts.NAME_TO_RCODE.NOERROR
         return sendRes()
       }
     }
@@ -56,7 +58,7 @@ export function startServer({ logger, port, hosts, fallbackServer }: IStartServe
       logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
       return sendRes()
     }
-    logger.info(`${formatHostname(question.name)} ${dns.consts.NAME_TO_QTYPE[question.type]}`, getElapsed(startTime))
+    logger.info(`${formatHostname(question.name)} ${RecordType[question.type]}`, getElapsed(startTime))
 
     res.header.rcode = response!.header.rcode
     res.answer = response!.answer
