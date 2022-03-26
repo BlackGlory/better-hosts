@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/BlackGlory/better-hosts/compare/v0.1.3...v0.1.4) (2022-03-26)
+
+
+### Bug Fixes
+
+* fix the out of range problem about SOA serial ([ded5676](https://github.com/BlackGlory/better-hosts/commit/ded567673046f846d72466fad6e59eb869da8407))
+
 ### [0.1.3](https://github.com/BlackGlory/better-hosts/compare/v0.1.2...v0.1.3) (2022-03-26)
 
 
