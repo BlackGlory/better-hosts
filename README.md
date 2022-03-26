@@ -11,18 +11,8 @@ better-hosts solves these problems by creating a DNS server that uses the hosts 
 
 ## Install
 ```sh
+# Please do not use Yarn v1 to install this package globally, Yarn v1 cannot properly patch dependencies.
 npm install --global better-hosts
-# or
-yarn global add better-hosts
-```
-
-### Install from source code
-```sh
-git clone git@github.com:BlackGlory/better-hosts.git
-cd better-hosts
-yarn install
-yarn build
-yarn global add "file:$(pwd)"
 ```
 
 ## Usage
