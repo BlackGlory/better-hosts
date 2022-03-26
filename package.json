@@ -14,6 +14,7 @@
   "author": "BlackGlory <woshenmedoubuzhidao@blackglory.me>",
   "license": "MIT",
   "scripts": {
+    "postinstall": "patch-package",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx --quiet src",
     "test": "jest --config jest.config.js",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
