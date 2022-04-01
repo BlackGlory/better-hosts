@@ -3,9 +3,10 @@ Dead simple DNS server using syntax similar to hosts file.
 
 ## Motivations
 hosts works well, until:
-1. you need wildcard-based rules.
-2. you need to share records in the hosts file.
-3. you don't want to have to request administrator or root privileges every time you edit it.
+1. you need wildcard-based rules like `127.0.0.1 *.local-service`.
+2. you need ban rules like `-example.com`.
+3. you need to share records in the hosts file to other devices.
+4. you don't want to have to request administrator or root privileges every time you edit it.
 
 better-hosts solves these problems by creating a DNS server that uses the hosts file.
 
