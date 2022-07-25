@@ -10,9 +10,9 @@ program
   .name(require('../package.json').name)
   .version(require('../package.json').version)
   .description(require('../package.json').description)
-  .option('--port <port>', '', '53')
   .option('--fallback-server <server>')
-  .option('--log <level>', '', 'info')
+  .option('--port [port]', '', '53')
+  .option('--log [level]', '', 'info')
   .argument('<filename>')
   .action(async (filename: string) => {
     const options = getOptions()

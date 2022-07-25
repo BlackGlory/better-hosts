@@ -22,9 +22,9 @@ Usage: better-hosts [options] <filename>
 
 Options:
   -V, --version               output the version number
-  --port <port>                (default: "53")
   --fallback-server <server>
-  --log <level>                (default: "info")
+  --port [port]                (default: "53")
+  --log [level]                (default: "info")
   -h, --help                  display help for command
 ```
 
