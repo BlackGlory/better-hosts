@@ -11,7 +11,7 @@ program
   .version(require('../package.json').version)
   .description(require('../package.json').description)
   .option('--port <port>', '', '53')
-  .option('--fallback-server <server>', '')
+  .option('--fallback-server <server>')
   .option('--log <level>', '', 'info')
   .argument('<filename>')
   .action(async (filename: string) => {
