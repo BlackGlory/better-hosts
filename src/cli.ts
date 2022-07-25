@@ -10,7 +10,7 @@ program
   .name(require('../package.json').name)
   .version(require('../package.json').version)
   .description(require('../package.json').description)
-  .option('--fallback-server <server>')
+  .requiredOption('--fallback-server <server>')
   .option('--port [port]', '', '53')
   .option('--log [level]', '', 'info')
   .argument('<filename>')
