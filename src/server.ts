@@ -44,11 +44,11 @@ export function startServer({ logger, port, hosts, fallbackServer }: IStartServe
         , ttl: 0
         , address: result.address
         })
-        return sendRes()
+        return sendResponse()
       } else {
         logger.info(`${formatHostname(question.name)} No records for ${RecordType[question.type]}`)
         res.header.rcode = dns.consts.NAME_TO_RCODE.NOERROR
-        return sendRes()
+        return sendResponse()
       }
     }
 
@@ -56,16 +56,16 @@ export function startServer({ logger, port, hosts, fallbackServer }: IStartServe
     const [err, response] = await getErrorResultAsync(() => resolve(fallbackServer, question))
     if (err) {
       logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
-      return sendRes()
+      return sendResponse()
     }
     logger.info(`${formatHostname(question.name)} ${RecordType[question.type]}`, getElapsed(startTime))
 
     res.header.rcode = response!.header.rcode
     res.answer = response!.answer
     res.authority = response!.authority
-    sendRes()
+    sendResponse()
 
-    function sendRes() {
+    function sendResponse() {
       logger.trace(`response: ${JSON.stringify(res)}`)
       res.send()
     }
