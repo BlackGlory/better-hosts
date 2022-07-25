@@ -37,7 +37,11 @@ program
   .parse()
 
 function getOptions() {
-  const opts = program.opts()
+  const opts = program.opts<{
+    port: string
+    fallbackServer: string
+    log: string
+  }>()
 
   assert(/^\d+$/.test(opts.port), 'The parameter port must be integer')
   const port: number = Number.parseInt(opts.port, 10)
