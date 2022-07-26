@@ -4,18 +4,24 @@ import { getErrorResultAsync } from 'return-style'
 import { Logger } from 'extra-logger'
 import { Hosts } from './hosts'
 import chalk from 'chalk'
-import ms from 'ms'
 import { go } from '@blackglory/go'
 import { RecordType } from './record-types'
 
 interface IStartServerOptions {
   fallbackServer: IServerInfo
+  timeout: number
   hosts: Hosts
   logger: Logger
   port: number
 }
 
-export function startServer({ logger, port, hosts, fallbackServer }: IStartServerOptions) {
+export function startServer({
+  logger
+, timeout
+, port
+, hosts
+, fallbackServer
+}: IStartServerOptions) {
   const server = dns.createServer()
 
   server.on('error', console.error)
@@ -53,7 +59,11 @@ export function startServer({ logger, port, hosts, fallbackServer }: IStartServe
     }
 
     const startTime = Date.now()
-    const [err, response] = await getErrorResultAsync(() => resolve(fallbackServer, question))
+    const [err, response] = await getErrorResultAsync(() => resolve(
+      fallbackServer
+    , question
+    , timeout
+    ))
     if (err) {
       logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
       return sendResponse()
@@ -74,7 +84,11 @@ export function startServer({ logger, port, hosts, fallbackServer }: IStartServe
   return server.serve(port)
 }
 
-function resolve(server: IServerInfo, question: dns.IQuestion): Promise<dns.IPacket> {
+function resolve(
+  server: IServerInfo
+, question: dns.IQuestion
+, timeout: number
+): Promise<dns.IPacket> {
   return new Promise((resolve, reject) => {
     let response: dns.IPacket
     const request = dns.Request({
@@ -84,7 +98,7 @@ function resolve(server: IServerInfo, question: dns.IQuestion): Promise<dns.IPac
       , port: server.port
       , type: 'udp'
       }
-    , timeout: ms('30s')
+    , timeout
     , cache: false
     , try_edns: true
     })

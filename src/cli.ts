@@ -11,6 +11,7 @@ program
   .version(require('../package.json').version)
   .description(require('../package.json').description)
   .requiredOption('--fallback-server <server>')
+  .option('--timeout [seconds]', '', '30')
   .option('--port [port]', '', '53')
   .option('--log [level]', '', 'info')
   .argument('<filename>')
@@ -31,6 +32,7 @@ program
       logger
     , hosts
     , fallbackServer
+    , timeout: options.timeout
     , port: options.port
     })
   })
@@ -39,6 +41,7 @@ program
 function getOptions() {
   const opts = program.opts<{
     port: string
+    timeout: string
     fallbackServer: string
     log: string
   }>()
@@ -46,11 +49,15 @@ function getOptions() {
   assert(/^\d+$/.test(opts.port), 'The parameter port must be integer')
   const port: number = Number.parseInt(opts.port, 10)
 
+  assert(/^\d+$/.test(opts.timeout), 'The parameter timeout must be integer')
+  const timeout: number = Number.parseInt(opts.port, 10) * 1000
+
   const fallbackServer: string = opts.fallbackServer
   const logLevel: Level = stringToLevel(opts.log, Level.Info)
 
   return {
     port
+  , timeout
   , fallbackServer
   , logLevel
   }

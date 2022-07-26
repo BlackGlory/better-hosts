@@ -23,6 +23,7 @@ Usage: better-hosts [options] <filename>
 Options:
   -V, --version               output the version number
   --fallback-server <server>
+  --timeout [seconds]          (default: "30")
   --port [port]                (default: "53")
   --log [level]                (default: "info")
   -h, --help                  display help for command
