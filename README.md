@@ -32,6 +32,5 @@ Options:
 Example:
 ```sh
 better-hosts hosts.txt \
-  --port 5353 \
   --fallback-server=1.1.1.1:53
 ```
