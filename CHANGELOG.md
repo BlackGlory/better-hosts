@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.9](https://github.com/BlackGlory/better-hosts/compare/v0.1.8...v0.1.9) (2022-07-26)
+
+
+### Features
+
+* add timeout option ([a126ef7](https://github.com/BlackGlory/better-hosts/commit/a126ef7f7e94b6d35c746ce739d0d96769565613))
+
 ### [0.1.8](https://github.com/BlackGlory/better-hosts/compare/v0.1.7...v0.1.8) (2022-07-25)
 
 ### [0.1.7](https://github.com/BlackGlory/better-hosts/compare/v0.1.6...v0.1.7) (2022-07-25)
