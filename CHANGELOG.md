@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.13](https://github.com/BlackGlory/better-hosts/compare/v0.1.12...v0.1.13) (2022-07-30)
+
+
+### Bug Fixes
+
+* fuck npm ([77b6334](https://github.com/BlackGlory/better-hosts/commit/77b6334ecaffb4b3a1a73f65544b6b25cdd5c184))
+
 ### [0.1.12](https://github.com/BlackGlory/better-hosts/compare/v0.1.11...v0.1.12) (2022-07-30)
 
 
