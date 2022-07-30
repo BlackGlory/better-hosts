@@ -11,7 +11,7 @@ export default {
 , entry: './lib/cli.js'
 , output: {
     path: fileURLToPath(new URL('dist', import.meta.url))
-  , filename: 'cli.cjs'
+  , filename: 'cli.js'
   }
 , externals: {
     'fsevents': 'commonjs fsevents'

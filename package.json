@@ -5,7 +5,7 @@
   "keywords": [
     "dns"
   ],
-  "bin": "node dist/cli.cjs",
+  "bin": "dist/cli.js",
   "files": [
     "dist"
   ],
@@ -25,7 +25,7 @@
     "build:compile": "tsc --project tsconfig.build.json",
     "build:patch": "tscpaths --project tsconfig.build.json --src ./src --out ./lib",
     "bundle": "webpack --stats-error-details",
-    "smoke": "node dist/cli.cjs --help",
+    "smoke": "node dist/cli.js --help",
     "release": "standard-version"
   },
   "husky": {
