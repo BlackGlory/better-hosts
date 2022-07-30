@@ -5,7 +5,7 @@
   "keywords": [
     "dns"
   ],
-  "bin": "dist/cli.cjs",
+  "bin": "node dist/cli.cjs",
   "files": [
     "dist"
   ],
