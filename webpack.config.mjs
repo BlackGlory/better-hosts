@@ -1,4 +1,5 @@
 import { fileURLToPath } from 'url'
+import ShebangPlugin from 'webpack-shebang-plugin'
 
 export default {
   target: 'node'
@@ -11,8 +12,11 @@ export default {
 , entry: './lib/cli.js'
 , output: {
     path: fileURLToPath(new URL('dist', import.meta.url))
-  , filename: 'cli.js'
+  , filename: 'cli.cjs'
   }
+, plugins: [
+    new ShebangPlugin()
+  ]
 , externals: {
     'fsevents': 'commonjs fsevents'
   }
