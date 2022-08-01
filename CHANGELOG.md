@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.15](https://github.com/BlackGlory/better-hosts/compare/v0.1.14...v0.1.15) (2022-08-01)
+
+
+### Features
+
+* set process.title ([0b8d636](https://github.com/BlackGlory/better-hosts/commit/0b8d636b8870890febf599c91dd9c6d2a493187e))
+
 ### [0.1.14](https://github.com/BlackGlory/better-hosts/compare/v0.1.13...v0.1.14) (2022-07-30)
 
 
