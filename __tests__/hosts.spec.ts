@@ -1,9 +1,9 @@
-import { readHosts } from '@utils/read-hosts'
+import { parseHosts } from '@src/hosts'
 import { getError } from 'return-style'
 
-describe('readHosts', () => {
+describe('parseHosts', () => {
   test('postive record', () => {
-    const result = readHosts(['127.0.0.1 localhost'])
+    const result = parseHosts(['127.0.0.1 localhost'])
     
     expect(result.length).toBe(1)
     expect(result[0].pattern.negative).toBe(false)
@@ -11,7 +11,7 @@ describe('readHosts', () => {
   })
 
   test('negative record', () => {
-    const result = readHosts(['-localhost'])
+    const result = parseHosts(['-localhost'])
 
     expect(result.length).toBe(1)
     expect(result[0].pattern.negative).toBe(true)
@@ -19,7 +19,7 @@ describe('readHosts', () => {
   })
 
   test('postive record with comment', () => {
-    const result = readHosts(['127.0.0.1 localhost # foo'])
+    const result = parseHosts(['127.0.0.1 localhost # foo'])
     
     expect(result.length).toBe(1)
     expect(result[0].pattern.negative).toBe(false)
@@ -27,7 +27,7 @@ describe('readHosts', () => {
   })
 
   test('negative record with comment', () => {
-    const result = readHosts(['-localhost # foo'])
+    const result = parseHosts(['-localhost # foo'])
 
     expect(result.length).toBe(1)
     expect(result[0].pattern.negative).toBe(true)
@@ -35,13 +35,13 @@ describe('readHosts', () => {
   })
 
   test('just comment', () => {
-    const result = readHosts(['# foo'])
+    const result = parseHosts(['# foo'])
 
     expect(result.length).toBe(0)
   })
 
   test('invalid line', () => {
-    const err = getError(() => readHosts(['foo']))
+    const err = getError(() => parseHosts(['foo']))
 
     expect(err).toBeInstanceOf(Error)
   })
