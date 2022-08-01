@@ -6,10 +6,13 @@ import { Level, Logger, TerminalTransport, stringToLevel } from 'extra-logger'
 import { parseServerInfo } from '@utils/parse-server-info'
 import { Hosts } from './hosts'
 
+const { name, version, description } = require('../package.json')
+process.title = name
+
 program
-  .name(require('../package.json').name)
-  .version(require('../package.json').version)
-  .description(require('../package.json').description)
+  .name(name)
+  .version(version)
+  .description(description)
   .requiredOption('--fallback-server <server>')
   .option('--timeout [seconds]', '', '30')
   .option('--port [port]', '', '53')
