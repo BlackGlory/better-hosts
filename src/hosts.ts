@@ -3,10 +3,10 @@ import { toArrayAsync } from 'iterable-operator'
 import { isIPv4Address } from '@utils/is-ipv4-address'
 import { isIPv6Address } from '@utils/is-ipv6-address'
 import { Logger } from 'extra-logger'
-import chokidar from 'chokidar'
 import { HostnamePattern } from '@utils/hostname-pattern'
 import { IterableOperator } from 'iterable-operator/lib/es2018/style/chaining'
 import { isntNull } from '@blackglory/prelude'
+import { FileWatcher } from 'extra-watcher/file-watcher'
 
 type IRecord = IPositiveRecord | INegativeRecord
 
@@ -30,9 +30,17 @@ export class Hosts {
   constructor({ filename, logger }: { filename: string; logger: Logger }) {
     this.update(filename)
 
-    chokidar.watch(filename, { ignoreInitial: true }).on('change', async () => {
-      await this.update(filename)
-      logger.info('The hosts file updated')
+    const watcher = new FileWatcher(filename)
+    watcher.start()
+    watcher.observe().subscribe(async event => {
+      switch (event.type) {
+        case 'created':
+        case 'modified':
+          await this.update(filename)
+          logger.info('The hosts file updated')
+          break
+      }
+      watcher.reset()
     })
   }
 
