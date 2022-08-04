@@ -33,7 +33,7 @@ declare module 'native-node-dns' {
 
   export interface IQuestion {
     name: string
-    type: number
+    type: NAME_TO_QTYPE
     class: number
   }
 
