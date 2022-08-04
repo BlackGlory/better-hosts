@@ -42,6 +42,7 @@ export function startServer({
     if (result?.hasRecords) {
       if (result.address) {
         logger.info(`${formatHostname(question.name)} ${result.address}`)
+
         res.header.rcode = dns.consts.NAME_TO_RCODE.NOERROR
         res.answer.push({
           name: question.name
@@ -50,36 +51,31 @@ export function startServer({
         , ttl: 0
         , address: result.address
         })
-        return sendResponse()
       } else {
         logger.info(`${formatHostname(question.name)} No records for ${RecordType[question.type]}`)
+
         res.header.rcode = dns.consts.NAME_TO_RCODE.NOERROR
-        return sendResponse()
+      }
+    } else {
+      const startTime = Date.now()
+      const [err, response] = await getErrorResultAsync(() => resolve(
+        fallbackServer
+      , question
+      , timeout
+      ))
+      if (err) {
+        logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
+      } else {
+        logger.info(`${formatHostname(question.name)} ${RecordType[question.type]}`, getElapsed(startTime))
+
+        res.header.rcode = response.header.rcode
+        res.answer = response.answer
+        res.authority = response.authority
       }
     }
 
-    const startTime = Date.now()
-    const [err, response] = await getErrorResultAsync(() => resolve(
-      fallbackServer
-    , question
-    , timeout
-    ))
-    if (err) {
-      logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
-    } else {
-      logger.info(`${formatHostname(question.name)} ${RecordType[question.type]}`, getElapsed(startTime))
-
-      res.header.rcode = response.header.rcode
-      res.answer = response.answer
-      res.authority = response.authority
-    }
-
-    sendResponse()
-
-    function sendResponse() {
-      logger.trace(`response: ${JSON.stringify(res)}`)
-      res.send()
-    }
+    logger.trace(`response: ${JSON.stringify(res)}`)
+    res.send()
   })
 
   return server.serve(port)

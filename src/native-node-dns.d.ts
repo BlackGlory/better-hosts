@@ -23,7 +23,7 @@ declare module 'native-node-dns' {
     opcode: number
     qr: number
     ra: number
-    rcode: number
+    rcode: NAME_TO_RCODE
     rd: number
     res1: number
     res2: number
