@@ -66,13 +66,14 @@ export function startServer({
     ))
     if (err) {
       logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
-      return sendResponse()
-    }
-    logger.info(`${formatHostname(question.name)} ${RecordType[question.type]}`, getElapsed(startTime))
+    } else {
+      logger.info(`${formatHostname(question.name)} ${RecordType[question.type]}`, getElapsed(startTime))
 
-    res.header.rcode = response.header.rcode
-    res.answer = response.answer
-    res.authority = response.authority
+      res.header.rcode = response.header.rcode
+      res.answer = response.answer
+      res.authority = response.authority
+    }
+
     sendResponse()
 
     function sendResponse() {
