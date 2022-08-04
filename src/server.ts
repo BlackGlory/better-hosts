@@ -31,6 +31,7 @@ export function startServer({
 
     res.header.rcode = dns.consts.NAME_TO_RCODE.SERVFAIL
 
+    // https://stackoverflow.com/questions/55092830/how-to-perform-dns-lookup-with-multiple-questions
     const question = req.question[0]
     logger.trace(`${formatHostname(question.name)} ${RecordType[question.type]}`)
     const result = go(() => {
