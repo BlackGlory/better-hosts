@@ -524,7 +524,7 @@
     iterable-operator "^0.14.5"
     rxjs "^7.5.1"
 
-"@blackglory/pass@^1.0.0":
+"@blackglory/pass@^1.0.0", "@blackglory/pass@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@blackglory/pass/-/pass-1.0.1.tgz#bbb7b6ac48ff23a06415bd0fe9fb1d713b194860"
   integrity sha512-uR857ZFp7QSzwYd8rV3N4sxtTNXXjcdSnIxGv/Krf/pwPCXRQVAwb5z2lpsS68XUS0utWTGZKseYs0AvcmFoRw==
@@ -543,7 +543,7 @@
     iterable-operator "^1.1.0"
     justypes "^2.0.0"
 
-"@blackglory/structures@^0.6.0":
+"@blackglory/structures@^0.6.0", "@blackglory/structures@^0.6.2":
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/@blackglory/structures/-/structures-0.6.2.tgz#ee59331cc73a271188fa544aaf9c5bd2de0581fe"
   integrity sha512-m1AKfGTYB53+HVmHHBOuUklap2MFRXrrdvqU1tGMLjgNOtEz4D6WzL77+HgAoXhOiNbW3N2yiKADEOaRAtsrJA==
@@ -2789,7 +2789,7 @@ extra-filesystem@^0.4.5:
     fs-extra "^10.1.0"
     tmp-promise "^3.0.3"
 
-extra-generator@^0.2.16:
+extra-generator@^0.2.16, extra-generator@^0.2.17:
   version "0.2.17"
   resolved "https://registry.yarnpkg.com/extra-generator/-/extra-generator-0.2.17.tgz#bfb70528fed1f7a43041b00eac52719edb184496"
   integrity sha512-NnLYbQCp+c5RDB4jqcRSiI6to/WCA2duC8pz6Festh53G/qaXcU2ADYO3j9iMoP3YCrSBJPLYWTOF+ETgHQZOg==
@@ -2812,7 +2812,7 @@ extra-logger@^0.6.9:
     chalk "4"
     justypes "^2.0.0"
 
-extra-promise@^2.0.0, extra-promise@^2.2.0, extra-promise@^2.3.0:
+extra-promise@^2.0.0, extra-promise@^2.2.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/extra-promise/-/extra-promise-2.3.0.tgz#d531bfa3dd488550737b2f0892769df23f50f070"
   integrity sha512-NjElMNLTlCALrye48lhpFbbeaIphY3bU6V44d3mS7VheZj/FPn8xBV7C66wUibd3zm4PCGhUxIoy/KgYSC+nOw==
@@ -2826,6 +2826,23 @@ extra-promise@^2.0.0, extra-promise@^2.2.0, extra-promise@^2.3.0:
     fast-json-stable-stringify "^2.1.0"
     iterable-operator "^1.1.0"
     justypes "^2.0.0"
+    lodash "^4.17.21"
+    return-style "^1.0.0"
+
+extra-promise@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/extra-promise/-/extra-promise-2.4.0.tgz#41da93c0c1f49a86b98779d3ca218c26042c9fff"
+  integrity sha512-ZCtSkXo3aJlzsl5nV1nugX5iGruMhFP+YiIkNoqIJFuAXzAdJBOIFdMGYSAafDQLcInwr95J62GA25h2ITcfuA==
+  dependencies:
+    "@blackglory/errors" "^2.2.2"
+    "@blackglory/go" "^1.1.2"
+    "@blackglory/pass" "^1.0.1"
+    "@blackglory/structures" "^0.6.2"
+    "@blackglory/types" "^1.2.1"
+    extra-generator "^0.2.17"
+    fast-json-stable-stringify "^2.1.0"
+    iterable-operator "^1.2.0"
+    justypes "^2.0.1"
     lodash "^4.17.21"
     return-style "^1.0.0"
 
@@ -3764,6 +3781,16 @@ iterable-operator@^1.0.0, iterable-operator@^1.1.0:
     "@blackglory/go" "^1.0.0"
     "@blackglory/types" "^1.1.0"
 
+iterable-operator@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/iterable-operator/-/iterable-operator-1.2.0.tgz#5d4d099b54769a36fa548c7fd33a6121dce3511a"
+  integrity sha512-rwdj2N+AZ00aXFKPuo0QEuRODBSseGN4ZOhs3IljCTK24JzzSbkZPA4k/9tSiu6RaehJtDZNRgncuiyEg+F4+w==
+  dependencies:
+    "@blackglory/errors" "^2.2.2"
+    "@blackglory/go" "^1.1.2"
+    "@blackglory/types" "^1.2.1"
+    justypes "^2.0.1"
+
 jest-changed-files@^28.1.3:
   version "28.1.3"
   resolved "https://registry.yarnpkg.com/jest-changed-files/-/jest-changed-files-28.1.3.tgz#d9aeee6792be3686c47cb988a8eaf82ff4238831"
@@ -4217,7 +4244,7 @@ justypes@^0.1.6:
   resolved "https://registry.yarnpkg.com/justypes/-/justypes-0.1.7.tgz#89d297b8dc06203c377ddab608bab5b8b164b0f1"
   integrity sha512-QKQRQixokHYVXtWc04U1R4h+Y5Wg32ZubhjJYEo7Tu32l5J93xHbD8vhR/G7G/k8wPo9tw6NVDEiW2QYMeh7ug==
 
-justypes@^2.0.0:
+justypes@^2.0.0, justypes@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/justypes/-/justypes-2.0.1.tgz#f1468bc13dcf106e488cc8ab64a48c6db0e66ddc"
   integrity sha512-hijVbniXf9DCtKaBIdJLqLn7uHjQ7KEFILiM9nfWwDdvej++eGMBqSCSAGXJvKjga00jfCmM5iyrhzBZybrTvQ==
@@ -6059,10 +6086,10 @@ webpack-merge@^5.7.3:
     clone-deep "^4.0.1"
     wildcard "^2.0.0"
 
-webpack-shebang-plugin@^1.1.7:
-  version "1.1.7"
-  resolved "https://registry.yarnpkg.com/webpack-shebang-plugin/-/webpack-shebang-plugin-1.1.7.tgz#def9c9cfa49c2067598e9e4fea567bf313c19cc1"
-  integrity sha512-3jtjFA+7mikbuME61+1Kf6+atBYBNh7r5RCBXmkUUgc0j3f+/MZpIbYbnOp3xhIDe/7i6Ra4O9Q32LiKeUutRg==
+webpack-shebang-plugin@^1.1.8:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/webpack-shebang-plugin/-/webpack-shebang-plugin-1.1.8.tgz#007c8e01fab41362beb9305c9ce3c2adcee0936b"
+  integrity sha512-8iHYp37XjytLuTkw8GCb4wm0s/0IWcv03YsfaDbOeRJfzSuBYVOadvc/QXQvr2b55pOEX1ANAEbz1fFSydJWVA==
 
 webpack-sources@^3.2.3:
   version "3.2.3"
