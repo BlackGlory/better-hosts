@@ -14,7 +14,7 @@
   "license": "MIT",
   "scripts": {
     "deduplicate": "yarn-deduplicate",
-    "prepublishOnly": "run-s clean build bundle",
+    "prepublishOnly": "run-s postinstall clean build bundle",
     "postinstall": "patch-package",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx --quiet src",
     "test": "jest --config jest.config.js",
@@ -30,7 +30,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "run-s clean lint build test bundle smoke",
+      "pre-commit": "run-s postinstall clean lint build test bundle smoke",
       "commit-msg": "commitlint --env HUSKY_GIT_PARAMS"
     }
   },
