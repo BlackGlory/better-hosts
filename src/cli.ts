@@ -3,8 +3,15 @@ import { program } from 'commander'
 import { startServer } from './server'
 import { assert } from '@blackglory/errors'
 import { Level, Logger, TerminalTransport, stringToLevel } from 'extra-logger'
-import { parseServerInfo } from '@utils/parse-server-info'
+import { IServerInfo, parseServerInfo } from '@utils/parse-server-info'
 import { Hosts } from './hosts'
+
+interface IOptions {
+  port: string
+  timeout: string
+  fallbackServer: string
+  log: string
+}
 
 const { name, version, description } = require('../package.json')
 process.title = name
@@ -19,49 +26,44 @@ program
   .option('--log [level]', '', 'info')
   .argument('<filename>')
   .action(async (filename: string) => {
-    const options = getOptions()
+    const options = program.opts<IOptions>()
+    const logLevel = getLogLevel(options)
+    const timeout = getTimeout(options)
+    const port = getPort(options)
+    const fallbackServer = getFallbackServer(options)
+
     const logger = new Logger({
-      level: options.logLevel
+      level: logLevel
     , transport: new TerminalTransport({})
     })
-    const hosts = new Hosts({
-      filename
-    , logger
-    })
-
-    const fallbackServer = parseServerInfo(options.fallbackServer)
+    const hosts = new Hosts({ filename, logger })
 
     startServer({
       logger
     , hosts
     , fallbackServer
-    , timeout: options.timeout
-    , port: options.port
+    , timeout
+    , port
     })
   })
   .parse()
 
-function getOptions() {
-  const opts = program.opts<{
-    port: string
-    timeout: string
-    fallbackServer: string
-    log: string
-  }>()
+function getPort(options: IOptions): number {
+  assert(/^\d+$/.test(options.port), 'The parameter port must be integer')
 
-  assert(/^\d+$/.test(opts.port), 'The parameter port must be integer')
-  const port: number = Number.parseInt(opts.port, 10)
+  return Number.parseInt(options.port, 10)
+}
 
-  assert(/^\d+$/.test(opts.timeout), 'The parameter timeout must be integer')
-  const timeout: number = Number.parseInt(opts.port, 10) * 1000
+function getTimeout(options: IOptions): number {
+  assert(/^\d+$/.test(options.timeout), 'The parameter timeout must be integer')
 
-  const fallbackServer: string = opts.fallbackServer
-  const logLevel: Level = stringToLevel(opts.log, Level.Info)
+  return Number.parseInt(options.port, 10) * 1000
+}
 
-  return {
-    port
-  , timeout
-  , fallbackServer
-  , logLevel
-  }
+function getFallbackServer(options: IOptions): IServerInfo {
+  return parseServerInfo(options.fallbackServer)
+}
+
+function getLogLevel(options: IOptions): Level {
+  return stringToLevel(options.log, Level.Info)
 }
