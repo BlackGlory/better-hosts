@@ -21,9 +21,9 @@ program
   .version(version)
   .description(description)
   .requiredOption('--fallback-server <server>')
-  .option('--timeout [seconds]', '', '30')
-  .option('--port [port]', '', '53')
-  .option('--log [level]', '', 'info')
+  .option('--timeout <seconds>', '', '30')
+  .option('--port <port>', '', '53')
+  .option('--log <level>', '', 'info')
   .argument('<filename>')
   .action(async (filename: string) => {
     const options = program.opts<IOptions>()
