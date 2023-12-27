@@ -33,7 +33,7 @@ export function startServer({
 
     // https://stackoverflow.com/questions/55092830/how-to-perform-dns-lookup-with-multiple-questions
     const question = req.question[0]
-    logger.trace(`${formatHostname(question.name)} ${RecordType[question.type]}`)
+    logger.trace(`${formatHostname(question.name)} ${formatRecordType(question.type)}`)
     const result = go(() => {
       switch (question.type) {
         case dns.consts.NAME_TO_QTYPE.A: return hosts.resolveA(question.name)
@@ -53,7 +53,7 @@ export function startServer({
         , address: result.address
         })
       } else {
-        logger.info(`${formatHostname(question.name)} No records for ${RecordType[question.type]}`)
+        logger.info(`${formatHostname(question.name)} No records for ${formatRecordType(question.type)}`)
 
         res.header.rcode = dns.consts.NAME_TO_RCODE.NOERROR
       }
@@ -67,7 +67,7 @@ export function startServer({
       if (err) {
         logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
       } else {
-        logger.info(`${formatHostname(question.name)} ${RecordType[question.type]}`, getElapsed(startTime))
+        logger.info(`${formatHostname(question.name)} ${formatRecordType(question.type)}`, getElapsed(startTime))
 
         res.header.rcode = response.header.rcode
         res.answer = response.answer
@@ -125,4 +125,8 @@ function formatHostname(hostname: string): string {
 
 function getElapsed(startTime: number): number {
   return Date.now() - startTime
+}
+
+function formatRecordType(recordType: number): string {
+  return RecordType[recordType] ?? `Unknown(${recordType})`
 }
