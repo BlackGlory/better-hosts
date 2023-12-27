@@ -1,4 +1,5 @@
-import { parseHosts } from '@src/hosts'
+import { describe, test, expect } from 'vitest'
+import { parseHosts } from '@src/hosts.js'
 import { getError } from 'return-style'
 
 describe('parseHosts', () => {

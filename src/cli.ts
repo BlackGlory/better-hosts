@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 import { program } from 'commander'
-import { startServer } from './server'
-import { assert } from '@blackglory/errors'
+import { startServer } from './server.js'
+import { assert } from '@blackglory/prelude'
 import { Level, Logger, TerminalTransport, stringToLevel } from 'extra-logger'
-import { IServerInfo, parseServerInfo } from '@utils/parse-server-info'
-import { Hosts } from './hosts'
+import { IServerInfo, parseServerInfo } from '@utils/parse-server-info.js'
+import { Hosts } from './hosts.js'
+import { name, version, description } from '@utils/package.js'
 
 interface IOptions {
   port: string
@@ -13,7 +14,6 @@ interface IOptions {
   log: string
 }
 
-const { name, version, description } = require('../package.json')
 process.title = name
 
 program

@@ -1,10 +1,11 @@
 import { readFileLineByLine } from 'extra-filesystem'
 import { toArrayAsync } from 'iterable-operator'
-import { isIPv4Address } from '@utils/is-ipv4-address'
-import { isIPv6Address } from '@utils/is-ipv6-address'
+import { isIPv4Address } from '@utils/is-ipv4-address.js'
+import { isIPv6Address } from '@utils/is-ipv6-address.js'
 import { Logger } from 'extra-logger'
-import { HostnamePattern } from '@utils/hostname-pattern'
-import { IterableOperator } from 'iterable-operator/lib/es2018/style/chaining'
+import { HostnamePattern } from '@utils/hostname-pattern.js'
+import { pipe } from 'extra-utils'
+import { map, filter, toArray } from 'iterable-operator'
 import { isntNull } from '@blackglory/prelude'
 import { FileWatcher } from 'extra-watcher/file-watcher'
 
@@ -109,8 +110,9 @@ export class Hosts {
 }
 
 export function parseHosts(lines: Iterable<string>): IRecord[] {
-  return new IterableOperator(lines)
-    .map<IRecord | null>(line => {
+  return pipe(
+    lines
+  , lines => map<string, IRecord | null>(lines, line => {
       if (/^\s*$/.test(line)) return null
       if (/^\s*#/.test(line)) return null
 
@@ -134,6 +136,7 @@ export function parseHosts(lines: Iterable<string>): IRecord[] {
 
       throw new Error(`Invalid line: ${line}`)
     })
-    .filter<IRecord>(isntNull)
-    .toArray()
+  , iter => filter<IRecord | null, IRecord>(iter, isntNull)
+  , toArray
+  )
 }

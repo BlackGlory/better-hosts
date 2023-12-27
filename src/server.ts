@@ -1,11 +1,11 @@
-import { IServerInfo } from '@utils/parse-server-info'
+import { IServerInfo } from '@utils/parse-server-info.js'
 import * as dns from 'native-node-dns'
 import { getErrorResultAsync } from 'return-style'
 import { Logger } from 'extra-logger'
-import { Hosts } from './hosts'
+import { Hosts } from './hosts.js'
 import chalk from 'chalk'
-import { go } from '@blackglory/go'
-import { RecordType } from './record-types'
+import { go } from '@blackglory/prelude'
+import { RecordType } from './record-types.js'
 
 interface IStartServerOptions {
   fallbackServer: IServerInfo
