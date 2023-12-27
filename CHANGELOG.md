@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/BlackGlory/better-hosts/compare/v0.1.21...v0.2.0) (2023-12-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* The minimal version of Node.js is 18.17.0
+
+* upgrade dependencies ([b42c5ac](https://github.com/BlackGlory/better-hosts/commit/b42c5acefc435edf7cb79779edb3ada8204ccf98))
+
 ### [0.1.21](https://github.com/BlackGlory/better-hosts/compare/v0.1.20...v0.1.21) (2023-01-28)
 
 
