@@ -1,5 +1,6 @@
 import { IServerInfo } from '@utils/parse-server-info.js'
 import * as dns from 'native-node-dns'
+import { IQuestion } from 'native-node-dns-packet'
 import { getErrorResultAsync } from 'return-style'
 import { Logger } from 'extra-logger'
 import { Hosts } from './hosts.js'
@@ -84,7 +85,7 @@ export function startServer({
 
 function resolve(
   server: IServerInfo
-, question: dns.IQuestion
+, question: IQuestion
 , timeout: number
 ): Promise<dns.IPacket> {
   return new Promise((resolve, reject) => {
