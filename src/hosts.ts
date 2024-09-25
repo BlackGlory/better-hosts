@@ -117,7 +117,7 @@ export function parseHosts(lines: Iterable<string>): IRecord[] {
       if (/^\s*#/.test(line)) return null
 
       {
-        const result = line.match(/^\s*(?<address>\S+)\s+(?<hostname>[\S^-]\S*)\s*(?:#.*)?$/)
+        const result = line.match(/^\s*(?<address>\S+)\s+(?<hostname>\S+)\s*(?:#.*)?$/)
         if (result) {
           const { address, hostname } = result.groups as { address: string; hostname: string }
           const pattern = new HostnamePattern(hostname)
