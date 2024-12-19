@@ -54,7 +54,7 @@ export async function startServer(
     // https://stackoverflow.com/questions/55092830/how-to-perform-dns-lookup-with-multiple-questions
     const question = query.questions[0] as IQuestion | undefined
     if (question) {
-      logger.trace(`${formatHostname(question.QNAME)} ${TYPE[question.QTYPE]}`)
+      logger.trace(`${formatHostname(question.QNAME)} ${formatRecordType(question.QTYPE)}`)
 
       const resolveResult = go(() => {
         switch (question.QTYPE) {
@@ -86,7 +86,7 @@ export async function startServer(
           }
           response.answers.push(answer)
         } else {
-          logger.info(`${formatHostname(question.QNAME)} No records for ${TYPE[question.QTYPE]}`)
+          logger.info(`${formatHostname(question.QNAME)} No records for ${formatRecordType(question.QTYPE)}`)
         }
       } else {
         const startTime = Date.now()
@@ -96,7 +96,7 @@ export async function startServer(
           , timeoutSignal(timeout)
           )
           logger.info(
-            `${formatHostname(question.QNAME)} ${TYPE[question.QTYPE]}`
+            `${formatHostname(question.QNAME)} ${formatRecordType(question.QTYPE)}`
           , getElapsed(startTime)
           )
         } catch (e) {
@@ -114,6 +114,10 @@ export async function startServer(
 
 function formatHostname(hostname: string): string {
   return chalk.cyan(hostname)
+}
+
+function formatRecordType(recordType: number): string {
+  return TYPE[recordType] ?? `Unknown(${recordType})`
 }
 
 function getElapsed(startTime: number): number {
