@@ -1,12 +1,11 @@
 import { IServerInfo } from '@utils/parse-server-info.js'
-import * as dns from 'native-node-dns'
-import { IQuestion } from 'native-node-dns-packet'
-import { getErrorResultAsync } from 'return-style'
 import { Logger } from 'extra-logger'
 import { Hosts } from './hosts.js'
 import chalk from 'chalk'
-import { go } from '@blackglory/prelude'
-import { RecordType } from './record-types.js'
+import { assert, go } from '@blackglory/prelude'
+import { DNSClient, DNSServer, IPacket, IQuestion, IResourceRecord, QR, RCODE, TYPE } from 'extra-dns'
+import { timeoutSignal } from 'extra-abort'
+import { createRDATAForA, createRDATAForAAAA } from '@utils/dns.js'
 
 interface IStartServerOptions {
   fallbackServer: IServerInfo
@@ -16,108 +15,101 @@ interface IStartServerOptions {
   port: number
 }
 
-export function startServer({
-  logger
-, timeout
-, port
-, hosts
-, fallbackServer
-}: IStartServerOptions) {
-  const server = dns.createServer()
+export async function startServer(
+  {
+    logger
+  , timeout
+  , port
+  , hosts
+  , fallbackServer
+  }: IStartServerOptions
+): Promise<() => Promise<void>> {
+  const server = new DNSServer('0.0.0.0', port)
+  const client = new DNSClient(fallbackServer.host, fallbackServer.port ?? 53)
 
-  server.on('error', console.error)
-  server.on('socketError', console.error)
-  server.on('request', async (req, res) => {
-    logger.trace(`request: ${JSON.stringify(req)}`)
+  server.on('query', async (query, respond) => {
+    logger.trace(`request: ${JSON.stringify(query)}`)
 
-    res.header.rcode = dns.consts.NAME_TO_RCODE.SERVFAIL
+    // 默认失败响应.
+    let response: IPacket = {
+      header: {
+        ID: query.header.ID
+      , flags: {
+          QR: QR.Response
+        , OPCODE: query.header.flags.OPCODE
+        , AA: 0
+        , TC: 0
+        , RD: 0
+        , RA: 0
+        , Z: 0
+        , RCODE: RCODE.ServFail
+        }
+      }
+    , questions: query.questions
+    , answers: []
+    , authorityRecords: []
+    , additionalRecords: []
+    }
 
     // https://stackoverflow.com/questions/55092830/how-to-perform-dns-lookup-with-multiple-questions
-    const question = req.question[0]
-    logger.trace(`${formatHostname(question.name)} ${formatRecordType(question.type)}`)
-    const result = go(() => {
-      switch (question.type) {
-        case dns.consts.NAME_TO_QTYPE.A: return hosts.resolveA(question.name)
-        case dns.consts.NAME_TO_QTYPE.AAAA: return hosts.resolveAAAA(question.name)
-      }
-    })
-    if (result?.hasRecords) {
-      if (result.address) {
-        logger.info(`${formatHostname(question.name)} ${result.address}`)
+    const question = query.questions[0] as IQuestion | undefined
+    if (question) {
+      logger.trace(`${formatHostname(question.QNAME)} ${TYPE[question.QTYPE]}`)
 
-        res.header.rcode = dns.consts.NAME_TO_RCODE.NOERROR
-        res.answer.push({
-          name: question.name
-        , type: question.type
-        , class: question.class
-        , ttl: 0
-        , address: result.address
-        })
+      const resolveResult = go(() => {
+        switch (question.QTYPE) {
+          case TYPE.A: return hosts.resolveA(question.QNAME)
+          case TYPE.AAAA: return hosts.resolveAAAA(question.QNAME)
+        }
+      })
+      if (resolveResult?.hasRecords) {
+        response.header.flags.RCODE = RCODE.NoError
+
+        if (resolveResult.address) {
+          logger.info(`${formatHostname(question.QNAME)} ${resolveResult.address}`)
+
+          const address = resolveResult.address
+          assert(address)
+
+          const answer: IResourceRecord = {
+            NAME: question.QNAME
+          , TYPE: question.QTYPE
+          , CLASS: question.QCLASS
+          , TTL: 0
+          , RDATA: go(() => {
+              switch (question.QTYPE) {
+                case TYPE.A: return createRDATAForA(address)
+                case TYPE.AAAA: return createRDATAForAAAA(address)
+                default: throw new Error('Impossible route')
+              }
+            })
+          }
+          response.answers.push(answer)
+        } else {
+          logger.info(`${formatHostname(question.QNAME)} No records for ${TYPE[question.QTYPE]}`)
+        }
       } else {
-        logger.info(`${formatHostname(question.name)} No records for ${formatRecordType(question.type)}`)
-
-        res.header.rcode = dns.consts.NAME_TO_RCODE.NOERROR
-      }
-    } else {
-      const startTime = Date.now()
-      const [err, response] = await getErrorResultAsync(() => resolve(
-        fallbackServer
-      , question
-      , timeout
-      ))
-      if (err) {
-        logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
-      } else {
-        logger.info(`${formatHostname(question.name)} ${formatRecordType(question.type)}`, getElapsed(startTime))
-
-        res.header.rcode = response.header.rcode
-        res.answer = response.answer
-        res.authority = response.authority
+        const startTime = Date.now()
+        try {
+          response = await client.resolve(
+            query
+          , timeoutSignal(timeout)
+          )
+          logger.info(
+            `${formatHostname(question.QNAME)} ${TYPE[question.QTYPE]}`
+          , getElapsed(startTime)
+          )
+        } catch (e) {
+          logger.error(`${formatHostname(question.QNAME)} ${e}`, getElapsed(startTime))
+        }
       }
     }
 
-    logger.trace(`response: ${JSON.stringify(res)}`)
-    res.send()
+    logger.trace(`response: ${JSON.stringify(response)}`)
+    await respond(response)
   })
 
-  return server.serve(port)
-}
-
-function resolve(
-  server: IServerInfo
-, question: IQuestion
-, timeout: number
-): Promise<dns.IPacket> {
-  return new Promise((resolve, reject) => {
-    let response: dns.IPacket
-    const request = dns.Request({
-      question
-    , server: {
-        address: server.host
-      , port: server.port
-      , type: 'udp'
-      }
-    , timeout
-    , cache: false
-    , try_edns: true
-    })
-
-    request.on('timeout', () => reject(new Error('timeout')))
-    request.on('cancelled', () => reject(new Error('cancelled')))
-    request.on('end', () => {
-      if (response) {
-        resolve(response)
-      } else {
-        reject(new Error('No response'))
-      }
-    })
-    request.on('message', (err, msg) => {
-      if (err) return reject(err)
-      response = msg
-    })
-
-    request.send()
-  })
+  return await server.listen()
 }
 
 function formatHostname(hostname: string): string {
@@ -126,8 +118,4 @@ function formatHostname(hostname: string): string {
 
 function getElapsed(startTime: number): number {
   return Date.now() - startTime
-}
-
-function formatRecordType(recordType: number): string {
-  return RecordType[recordType] ?? `Unknown(${recordType})`
 }

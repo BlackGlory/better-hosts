@@ -38,7 +38,7 @@ program
     })
     const hosts = new Hosts({ filename, logger })
 
-    startServer({
+    await startServer({
       logger
     , hosts
     , fallbackServer

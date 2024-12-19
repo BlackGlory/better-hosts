@@ -19,8 +19,7 @@
   "scripts": {
     "prepare": "ts-patch install -s",
     "deduplicate": "yarn-deduplicate",
-    "prepublishOnly": "run-s postinstall prepare clean build",
-    "postinstall": "patch-package",
+    "prepublishOnly": "run-s prepare clean build",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx --quiet src",
     "test": "vitest --run",
     "clean": "rimraf lib dist",
@@ -30,7 +29,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "run-s postinstall prepare clean lint build test smoke",
+      "pre-commit": "run-s prepare clean lint build test smoke",
       "commit-msg": "commitlint --env HUSKY_GIT_PARAMS"
     }
   },
@@ -43,6 +42,7 @@
     "eslint": "^8.56.0",
     "husky": "4",
     "npm-run-all": "^4.1.5",
+    "return-style": "^3.0.1",
     "rimraf": "^5.0.5",
     "standard-version": "^9.5.0",
     "ts-patch": "^3.1.1",
@@ -57,15 +57,14 @@
     "@blackglory/prelude": "^0.3.4",
     "chalk": "^5.3.0",
     "commander": "^11.1.0",
+    "extra-abort": "^0.4.0",
+    "extra-dns": "^0.1.2",
     "extra-filesystem": "^0.5.1",
     "extra-logger": "^0.7.2",
     "extra-promise": "^6.0.8",
     "extra-utils": "^5.6.0",
     "extra-watcher": "^0.2.2",
-    "iterable-operator": "^4.0.6",
-    "native-node-dns": "0.7.6",
-    "native-node-dns-packet": "0.1.5",
-    "patch-package": "^8.0.0",
-    "return-style": "^3.0.1"
+    "ip-address": "^10.0.1",
+    "iterable-operator": "^4.0.6"
   }
 }
