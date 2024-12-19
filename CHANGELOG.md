@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.3](https://github.com/BlackGlory/better-hosts/compare/v0.2.2...v0.2.3) (2024-12-19)
+
+
+### Features
+
+* improve logging ([dbac5e4](https://github.com/BlackGlory/better-hosts/commit/dbac5e48c6f2bf95d9459d4ae9b4539f8af39016))
+
 ### [0.2.2](https://github.com/BlackGlory/better-hosts/compare/v0.2.1...v0.2.2) (2024-12-19)
 
 ### [0.2.1](https://github.com/BlackGlory/better-hosts/compare/v0.2.0...v0.2.1) (2023-12-27)
