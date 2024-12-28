@@ -5,7 +5,8 @@ import chalk from 'chalk'
 import { assert, go } from '@blackglory/prelude'
 import { DNSClient, DNSServer, IPacket, IQuestion, IResourceRecord, QR, RCODE, TYPE } from 'extra-dns'
 import { timeoutSignal } from 'extra-abort'
-import { createRDATAForA, createRDATAForAAAA } from '@utils/dns.js'
+import { A_RDATA, AAAA_RDATA } from 'extra-dns'
+import { Address6 } from 'ip-address'
 
 interface IStartServerOptions {
   fallbackServer: IServerInfo
@@ -76,10 +77,14 @@ export async function startServer(
           , TYPE: question.QTYPE
           , CLASS: question.QCLASS
           , TTL: 0
-          , RDATA: go(() => {
+          , RDATA: new ArrayBuffer()
+          , rdata: go(() => {
               switch (question.QTYPE) {
-                case TYPE.A: return createRDATAForA(address)
-                case TYPE.AAAA: return createRDATAForAAAA(address)
+                case TYPE.A: return new A_RDATA(address)
+                case TYPE.AAAA: {
+                  const canonicalAddress = new Address6(address).canonicalForm()
+                  return new AAAA_RDATA(canonicalAddress)
+                }
                 default: throw new Error('Impossible route')
               }
             })

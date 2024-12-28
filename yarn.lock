@@ -1949,10 +1949,10 @@ extra-defer@^0.3.1:
     extra-generator "^0.5.9"
     extra-promise "^6.2.0"
 
-extra-dns@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/extra-dns/-/extra-dns-0.1.5.tgz#e25da3d1f74740d1f3f37adf61f679e356116794"
-  integrity sha512-J3D/qFMbtpY/oPy5pI9znB0YSvB7OQNfHI4JOt1B71AnSwjCrXB/cEzU3LJ5JzpUZy2ljPU0V1Hc1hs6JDUDHw==
+extra-dns@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/extra-dns/-/extra-dns-0.1.6.tgz#e9c0442d27aac3ed40a03d9113a93df9f219a95a"
+  integrity sha512-6oA4tQmAb/liOqVH28j+p9TjXZ9YxqRbBk/lp6TnIi1v71dx/w8gn+syGCcTGiPto80jru6O88+YSu8SYZaKWA==
   dependencies:
     "@blackglory/prelude" "^0.4.0"
     "@blackglory/structures" "^0.14.9"
