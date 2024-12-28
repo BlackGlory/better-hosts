@@ -111,7 +111,7 @@
     iterable-operator "^2.5.0"
     justypes "^4.1.0"
 
-"@blackglory/prelude@^0.3.0", "@blackglory/prelude@^0.3.1", "@blackglory/prelude@^0.3.3", "@blackglory/prelude@^0.3.4", "@blackglory/prelude@^0.3.5":
+"@blackglory/prelude@^0.3.0", "@blackglory/prelude@^0.3.1", "@blackglory/prelude@^0.3.3", "@blackglory/prelude@^0.3.5":
   version "0.3.5"
   resolved "https://registry.yarnpkg.com/@blackglory/prelude/-/prelude-0.3.5.tgz#65b02ed5814c304ae11052bc7ba8818608de6d1d"
   integrity sha512-uoic/h20g7ezJzfXlP0xY6f8qbYtDyMxI7A8IDULEHiaxry6UPnRQO1LtMmH1MgAyVTTjh7GDkPLyOSvoP9BsQ==
@@ -1949,10 +1949,10 @@ extra-defer@^0.3.1:
     extra-generator "^0.5.9"
     extra-promise "^6.2.0"
 
-extra-dns@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/extra-dns/-/extra-dns-0.1.2.tgz#ff8766f0d19311da64bc2aff84269b6b59ac5615"
-  integrity sha512-d9PKY+Q83irVmiCOye3TITeQCl+A1GM303cEXI6CiaxDuwOk94iKbqhvoFZNcV+dtmoJWCPfZ+yHQF82Ojm8OA==
+extra-dns@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/extra-dns/-/extra-dns-0.1.5.tgz#e25da3d1f74740d1f3f37adf61f679e356116794"
+  integrity sha512-J3D/qFMbtpY/oPy5pI9znB0YSvB7OQNfHI4JOt1B71AnSwjCrXB/cEzU3LJ5JzpUZy2ljPU0V1Hc1hs6JDUDHw==
   dependencies:
     "@blackglory/prelude" "^0.4.0"
     "@blackglory/structures" "^0.14.9"
@@ -2068,7 +2068,7 @@ extra-promise@^4.0.0, extra-promise@^4.4.0:
     lodash "^4.17.21"
     return-style "^1.0.0"
 
-extra-promise@^6.0.4, extra-promise@^6.0.5, extra-promise@^6.0.6, extra-promise@^6.0.8, extra-promise@^6.2.0:
+extra-promise@^6.0.4, extra-promise@^6.0.5, extra-promise@^6.0.6, extra-promise@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/extra-promise/-/extra-promise-6.2.0.tgz#ed0d526d441d77c03a0981bdef7f7363c8d54d21"
   integrity sha512-gWpY0N4biPAn2HLf/5PTM0cbtlESKA8WkpKtFFldxUKLWVsyK+jC+vIYh0V2AynAvAUgyYBf0DELshKu3wuEkA==

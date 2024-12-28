@@ -54,17 +54,17 @@
     "yarn-deduplicate": "^6.0.2"
   },
   "dependencies": {
-    "@blackglory/prelude": "^0.3.4",
+    "@blackglory/prelude": "^0.4.0",
     "chalk": "^5.3.0",
     "commander": "^11.1.0",
     "extra-abort": "^0.4.0",
-    "extra-dns": "^0.1.2",
+    "extra-dns": "^0.1.5",
     "extra-filesystem": "^0.5.1",
     "extra-logger": "^0.7.2",
-    "extra-promise": "^6.0.8",
+    "extra-promise": "^7.0.0",
     "extra-utils": "^5.6.0",
     "extra-watcher": "^0.2.2",
     "ip-address": "^10.0.1",
-    "iterable-operator": "^4.0.6"
+    "iterable-operator": "^5.1.0"
   }
 }
