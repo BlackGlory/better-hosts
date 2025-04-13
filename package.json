@@ -2,9 +2,7 @@
   "name": "better-hosts",
   "version": "0.2.4",
   "description": "",
-  "keywords": [
-    "dns"
-  ],
+  "keywords": [],
   "bin": "lib/cli.js",
   "files": [
     "lib"
