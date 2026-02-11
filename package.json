@@ -1,6 +1,6 @@
 {
   "name": "better-hosts",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "",
   "keywords": [],
   "bin": "lib/cli.js",

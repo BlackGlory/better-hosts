@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.5](https://github.com/BlackGlory/better-hosts/compare/v0.2.4...v0.2.5) (2026-02-11)
+
+
+### Bug Fixes
+
+* **cli:** timeout ([c7f737b](https://github.com/BlackGlory/better-hosts/commit/c7f737b61b352804db11cbbf8d52329c8ba08793))
+
 ### [0.2.4](https://github.com/BlackGlory/better-hosts/compare/v0.2.3...v0.2.4) (2024-12-28)
 
 ### [0.2.3](https://github.com/BlackGlory/better-hosts/compare/v0.2.2...v0.2.3) (2024-12-19)
