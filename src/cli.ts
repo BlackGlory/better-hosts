@@ -3,7 +3,7 @@ import { program } from 'commander'
 import { startServer } from './server.js'
 import { assert } from '@blackglory/prelude'
 import { Level, Logger, TerminalTransport, stringToLevel } from 'extra-logger'
-import { IServerInfo, parseServerInfo } from '@utils/parse-server-info.js'
+import { parseHostnamePort } from 'extra-utils'
 import { Hosts } from './hosts.js'
 import { name, version, description } from '@utils/package.js'
 
@@ -60,8 +60,11 @@ function getTimeout(options: IOptions): number {
   return Number.parseInt(options.timeout, 10) * 1000
 }
 
-function getFallbackServer(options: IOptions): IServerInfo {
-  return parseServerInfo(options.fallbackServer)
+function getFallbackServer(options: IOptions): {
+  hostname: string
+  port?: number
+} {
+  return parseHostnamePort(options.fallbackServer)
 }
 
 function getLogLevel(options: IOptions): Level {

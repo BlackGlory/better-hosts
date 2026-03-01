@@ -1,4 +1,3 @@
-import { IServerInfo } from '@utils/parse-server-info.js'
 import { Logger } from 'extra-logger'
 import { Hosts } from './hosts.js'
 import chalk from 'chalk'
@@ -9,7 +8,10 @@ import { A_RDATA, AAAA_RDATA } from 'extra-dns'
 import { Address6 } from 'ip-address'
 
 interface IStartServerOptions {
-  fallbackServer: IServerInfo
+  fallbackServer: {
+    hostname: string
+    port?: number
+  }
   timeout: number
   hosts: Hosts
   logger: Logger
@@ -26,7 +28,7 @@ export async function startServer(
   }: IStartServerOptions
 ): Promise<() => Promise<void>> {
   const server = new DNSServer('0.0.0.0', port)
-  const client = new DNSClient(fallbackServer.host, fallbackServer.port ?? 53)
+  const client = new DNSClient(fallbackServer.hostname, fallbackServer.port ?? 53)
 
   server.on('query', async (query, respond) => {
     logger.trace(`request: ${JSON.stringify(query)}`)
