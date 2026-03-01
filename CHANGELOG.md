@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/BlackGlory/better-hosts/compare/v0.2.5...v0.3.0) (2026-03-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* Node.js v18 => Node.js v22
+
+* upgrade dependencies ([a907be2](https://github.com/BlackGlory/better-hosts/commit/a907be20bde73c0cf7e230fd4e9bb5585310e2c8))
+
 ### [0.2.5](https://github.com/BlackGlory/better-hosts/compare/v0.2.4...v0.2.5) (2026-02-11)
 
 
